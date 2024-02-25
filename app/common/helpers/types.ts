@@ -1,6 +1,20 @@
-export type ResponseProducts = products[];
+// types Response General services
 
-export interface products {
+import { AxiosError } from "axios";
+
+export type ApiResponse<T = any | undefined> = {
+  success: boolean;
+  status?: number;
+  statusCode?: number | null;
+  errorMessage?: string | null;
+  response?: T;
+  error?: AxiosError;
+};
+
+// types response all products
+export type ResponseProducts = Products[];
+
+export interface Products {
   id: number;
   title: string;
   price: number;

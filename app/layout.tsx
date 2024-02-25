@@ -1,9 +1,14 @@
-import type { Metadata } from "next";
-
 import { Roboto } from "next/font/google";
 
+// configuration
 import NavBar from "./components/NavBar";
+import { ReduxProvider } from "./common/store";
+
+//styles
 import "./globals.css";
+
+//types
+import type { Metadata } from "next";
 
 const inter = Roboto({ weight: ["100", "400"], subsets: ["latin"] });
 
@@ -20,8 +25,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NavBar />
-        {children}
+        <ReduxProvider>
+          <NavBar />
+          {children}
+        </ReduxProvider>
       </body>
     </html>
   );

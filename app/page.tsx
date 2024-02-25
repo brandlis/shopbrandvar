@@ -1,52 +1,52 @@
 "use client";
+import React, { useEffect } from "react";
+import Card from "./components/Card";
 
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
+import { useAppDispatch, useAppSelector } from "./common/store/hooks";
+import { addToCart, getDataThunks } from "./common/store/actions";
+import {
+  productsHomeSelector,
+  productsSelectorLoading,
+} from "./common/store/selector";
 
 export default function Home() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const loading = useAppSelector(productsSelectorLoading);
+  const products = useAppSelector(productsHomeSelector);
+
+  const getAllProducts = async () => {
+    try {
+      const responseAllProducts = await dispatch(getDataThunks()).unwrap();
+
+      if (responseAllProducts.success && responseAllProducts.response) {
+        return;
+      }
+
+      throw new Error(responseAllProducts.errorMessage);
+    } catch (error) {
+      //TODO: REDIRECT TRY AGAIN
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    setLoading(true);
-    const fetchData = async () => {
-      try {
-        const response = await fetch("https://fakestoreapi.com/products");
-        const data = await response.json();
-        setProducts(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (!products) getAllProducts();
+  }, [products]);
 
-    fetchData();
-  }, []);
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 phone:px-6 phone:py-24 laptop:max-w-7xl laptop:px-8">
       <div className="grid grid-cols-1 gap-x-6 gap-y-10 phone:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 desktop:gap-x-8">
-        {products.map((product) => (
-          <div key={product.id} className="group">
-            <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-              <Image
-                width={200}
-                height={200}
-                src={product.image}
-                alt={product.title}
-                className="h-full w-full object-cover object-center group-hover:opacity-75"
-              />
-            </div>
-
-            <h3 className="mt-4 text-sm text-gray-700">{product.title}</h3>
-            <h2 className="mt-4 text-sm text-gray-700">
-              {product.description}
-            </h2>
-            <p className="mt-1 text-lg font-medium text-gray-900">
-              {product.price}
-            </p>
-          </div>
-        ))}
+        {products &&
+          products.map((product) => (
+            <Card
+              key={product.id}
+              product={product}
+              onClick={() => dispatch(addToCart(product))}
+            />
+          ))}
       </div>
     </div>
   );
