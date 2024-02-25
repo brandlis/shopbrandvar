@@ -17,6 +17,8 @@ const config: Config = {
     screens: {
       phone: "390px",
 
+      tablet: "720px",
+
       laptop: "1024px",
 
       desktop: "1280px",
@@ -35,6 +37,6 @@ const config: Config = {
       "950": "#000000",
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/aspect-ratio")],
 };
 export default config;
