@@ -1,5 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { addToCart, getDataThunks } from "../actions";
+import { toast } from "sonner";
+
+import { addToCart, deleteToCart, getDataThunks } from "../actions";
 import { Products, ResponseProducts } from "../../helpers/types";
 
 export interface dataState {
@@ -34,7 +36,23 @@ const dataReducer = createReducer(initialState, (builder) => {
   builder.addCase(addToCart, (state, action) => {
     if (action.payload) {
       const productToAdd = action.payload;
-      state.products.push(productToAdd);
+      const existingProduct = state.products.find(
+        (product) => product.id === productToAdd.id
+      );
+      if (!existingProduct) {
+        toast.success(`Product added to cart`);
+        state.products.push(productToAdd);
+      } else {
+        toast.warning(`The product is already in the cart`);
+      }
+    }
+  });
+  builder.addCase(deleteToCart, (state, action) => {
+    if (action.payload) {
+      const productId = action.payload.id;
+      state.products = state.products.filter(
+        (product) => product.id !== productId
+      );
     }
   });
 });

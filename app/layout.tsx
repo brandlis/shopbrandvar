@@ -1,4 +1,5 @@
 import { Roboto } from "next/font/google";
+import { Toaster } from "sonner";
 
 // configuration
 import NavBar from "./components/NavBar";
@@ -28,6 +29,7 @@ export default function RootLayout({
         <ReduxProvider>
           <NavBar />
           {children}
+          <Toaster />
         </ReduxProvider>
       </body>
     </html>

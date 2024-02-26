@@ -1,15 +1,12 @@
 import { createSelector } from "@reduxjs/toolkit";
+
 import { RootState } from "../store";
 
 export const productSelector = (state: RootState) => state.products;
 
 export const productsSelector = createSelector(
   productSelector,
-  (state) => state.allProducts
-);
-
-export const productsHomeSelector = createSelector(productSelector, (state) =>
-  state.allProducts?.slice(0, 4)
+  (state) => state.allProducts || []
 );
 
 export const productsSelectorLoading = createSelector(
@@ -17,7 +14,7 @@ export const productsSelectorLoading = createSelector(
   (state) => state.loading === true
 );
 
-// export const productsAddCartSelector = createSelector(
-//   productSelector,
-//   (state) => state.addTocart
-// );
+export const productsAddCartSelector = createSelector(
+  productSelector,
+  (state) => state.products
+);
