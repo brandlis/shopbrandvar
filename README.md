@@ -1,5 +1,11 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+Este proyecto fue creado con el fin de evaluar conocimientos del frontend, donde se busca la destreza del participante a la hora de desarrollar un entorno manejable y escalable.
+
+Para el proyecto se utilizo Next.js - typescript - redux-toolkin - tailwind - react icons - sooner.
+
+enlace proyecto desplegado shopbrandvar.vercel.app
+
 ## Getting Started
 
 First, run the development server:
